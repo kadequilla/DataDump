@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-
-namespace DemoDataDump.Model;
+﻿namespace DemoDataDump.Model;
 
 public class Employee
 {

@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using DemoDataDump.Constants;
-using DemoDataDump.Data;
 using Npgsql;
 using Parquet.Serialization;
 

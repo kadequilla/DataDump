@@ -1,4 +1,7 @@
-﻿using DemoDataDump.Data;
+﻿using CommandLine;
+using DemoDataDump.Data;
+using DemoDataDump.DTOs;
+using Microsoft.IO;
 
 namespace DemoDataDump.Builder;
 
@@ -12,11 +15,19 @@ public class CliBuilder : ICliBuilder
         ObjectInstances.Add(new T());
     }
 
-    public void Build()
+    public void Build(string[] args)
     {
         var dataCon = DataConnection.Instance;
         dataCon.OpenConnection();
-        RunWrite(dataCon);
+
+        Parser.Default.ParseArguments<Options>(args)
+            .WithParsed<Options>(o =>
+            {
+                if (o.Write)
+                {
+                    RunWrite(dataCon);
+                }
+            });
         dataCon.CloseConnection();
     }
 
