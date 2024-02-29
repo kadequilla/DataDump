@@ -7,8 +7,36 @@ public class DataConnection
 {
     public static readonly DataConnection Instance = new();
 
-    public static NpgsqlConnection Connect()
+    private static NpgsqlConnection Connect()
     {
         return new NpgsqlConnection(ConnectionString.PgConnString);
+    }
+
+    public readonly NpgsqlConnection NpgsqlConnection = Connect();
+
+    public void OpenConnection()
+    {
+        try
+        {
+            NpgsqlConnection.Open();
+            Console.WriteLine("Connected to PostgreSQL database.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error: {e.Message}");
+        }
+    }
+
+    public void CloseConnection()
+    {
+        try
+        {
+            NpgsqlConnection.Close();
+            Console.WriteLine("Disconnected to PostgreSQL database.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error: {e.Message}");
+        }
     }
 }

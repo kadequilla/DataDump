@@ -1,6 +1,6 @@
 ﻿namespace DemoDataDump.Constants;
 
-public class ConstantPath
+public static class ConstantPath
 {
-    public static readonly string RootPath = @"c:\Users\BFI\documents";
+    public static readonly string RootPath = @"c:\Users\BFI\documents\Parquets";
 }

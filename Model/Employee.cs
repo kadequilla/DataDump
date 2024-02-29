@@ -8,6 +8,6 @@ public class Employee
     public string? First_Name { get; set; }
     public string? Last_Name { get; set; }
     public string? Email { get; set; }
-    public long MobileNo { get; set; }
+    public long Mobile_No { get; set; }
     public DateTime DateOfBirth { get; set; }
 }
