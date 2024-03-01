@@ -1,6 +1,6 @@
 ﻿namespace DemoDataDump;
 
-public class Utils
+public static class Utils
 {
     public static void Println(ConsoleColor consoleColor, dynamic text)
     {

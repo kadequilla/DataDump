@@ -1,7 +1,7 @@
 ﻿using System.Data.SqlClient;
 using Npgsql;
 
-namespace DemoDataDump.Service.Implementations;
+namespace DemoDataDump.Service.Implementations.Abstracts;
 
 public abstract class AdbService
 {
