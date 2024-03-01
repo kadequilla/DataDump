@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlClient;
+using System.Transactions;
 using Npgsql;
 
 namespace DemoDataDump.Service.Implementations.Abstracts;
@@ -7,6 +8,7 @@ public abstract class AdbService
 {
     protected NpgsqlConnection NPglSqlConn = null!;
     protected SqlConnection SqlConnection = null!;
+
 
     public void SetDbConnInstance(NpgsqlConnection npgsqlConnection)
     {

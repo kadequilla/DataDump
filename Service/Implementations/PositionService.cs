@@ -9,8 +9,7 @@ public class PositionService : AServiceBase<Position>, IService
 {
     public async Task Write()
     {
-        var instances
-            = NPglSqlConn.Query<Position>("select * from position");
+        var instances = NPglSqlConn.Query<Position>("select * from position");
         await WriteFile(instances, "Position.parquet");
     }
 

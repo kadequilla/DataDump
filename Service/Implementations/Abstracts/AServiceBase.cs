@@ -1,6 +1,9 @@
-﻿using Dapper;
+﻿using System.Data.SqlClient;
+using System.Timers;
+using Dapper;
 using DemoDataDump.Constants;
 using Parquet.Serialization;
+using Timer = System.Threading.Timer;
 
 namespace DemoDataDump.Service.Implementations.Abstracts;
 
@@ -27,19 +30,31 @@ public abstract class AServiceBase<TModel> : AdbService where TModel : new()
         return await ParquetSerializer.DeserializeAsync<TModel>(filePath);
     }
 
+
     protected async Task ExecuteRead(string qry, string fileName)
     {
+        var transaction = SqlConnection.BeginTransaction();
         try
         {
-            var instances = await ReadFile(fileName);
-            var rowsAffected = await SqlConnection.ExecuteAsync(qry, instances);
+            Utils.Println(ConsoleColor.Blue, $"Reading {fileName} . . .");
+            var modelInstances = await ReadFile(fileName);
+
+            Utils.Println(ConsoleColor.Cyan, $"Inserting {fileName} . . .");
+            var timer = new Timer(Utils.TimerCallback!, null, 0, 1000);
+            var rowsAffected = await SqlConnection.ExecuteAsync(qry, modelInstances, transaction);
+
+            await timer.DisposeAsync(); //dispose timer if success
 
             Utils.Println(ConsoleColor.Cyan,
-                $"'{fileName}' was successfully inserted to database | ROWS AFFECTED: ({rowsAffected})");
+                $"'{fileName}' was successfully inserted to database | ROWS AFFECTED: ({rowsAffected}) | Elapsed Time: {Utils.ElapsedSeconds} seconds.\n");
+            Utils.ElapsedSeconds = 0;
+
+            transaction.Commit(); //commit rows to database
         }
         catch (Exception e)
         {
             Utils.Println(ConsoleColor.Red, e.Message);
+            transaction.Rollback();
         }
     }
 }

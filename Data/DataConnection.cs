@@ -26,12 +26,42 @@ public class DataConnection
         }
     }
 
+    public async Task OpenConnectionAsync()
+    {
+        try
+        {
+            await NpgsqlConnection.OpenAsync();
+            await SqlConnection.OpenAsync();
+
+            Console.WriteLine("\nConnected to databases. \n");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error: {e.Message}");
+        }
+    }
+
     public void CloseConnection()
     {
         try
         {
             NpgsqlConnection.Close();
             SqlConnection.Close();
+            Console.ResetColor();
+            Console.WriteLine("Disconnected to databases.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error: {e.Message}");
+        }
+    }
+
+    public async Task CloseConnectionAsync()
+    {
+        try
+        {
+            await NpgsqlConnection.CloseAsync();
+            await SqlConnection.CloseAsync();
             Console.ResetColor();
             Console.WriteLine("Disconnected to databases.");
         }

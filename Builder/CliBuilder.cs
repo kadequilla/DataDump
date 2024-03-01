@@ -15,19 +15,29 @@ public class CliBuilder : ICliBuilder
     public async Task BuildAsync(string[] args)
     {
         var dataCon = DataConnection.Instance;
-        dataCon.OpenConnection();
+        await dataCon.OpenConnectionAsync();
 
-        if (args.First().Equals("write"))
-        {
-            await RunWrite(dataCon);
-        }
-        else if (args.First().Equals("read"))
-        {
-            await RunRead(dataCon);
-        }
+        //RUN ASYNC APPROACH
+        //Step 1: Write Parquet file.
+        await RunWrite(dataCon);
+        Utils.Println(ConsoleColor.DarkGreen, "DONE WRITING \u2713 \n");
 
-        Utils.Println(ConsoleColor.DarkGreen, "DONE \u2713");
-        dataCon.CloseConnection();
+        //Step 2: Insert Parquet file data to database.
+        await RunRead(dataCon);
+        Utils.Println(ConsoleColor.DarkGreen, "DONE INSERT TO DATABASE \u2713 \n");
+
+        /* RUN PER ARGS APPROACH
+         * if (args.First().Equals("write"))
+            {
+                await RunWrite(dataCon);
+            }
+            else if (args.First().Equals("read"))
+            {
+                await RunRead(dataCon);
+            }
+         */
+
+        await dataCon.CloseConnectionAsync();
     }
 
     private async Task RunWrite(DataConnection dataCon)
@@ -52,7 +62,6 @@ public class CliBuilder : ICliBuilder
     {
         try
         {
-            Utils.Println(ConsoleColor.Blue, "Reading . . .");
             foreach (var instance in ObjectInstances)
             {
                 instance.SetDbConnInstance(dataCon.SqlConnection);
