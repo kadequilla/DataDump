@@ -29,7 +29,7 @@ public class EmployeeService : AServiceBase<Employee>, IService
             var rowsAffected = await SqlConnection.ExecuteAsync(qry, instances);
 
             Utils.Println(ConsoleColor.Cyan,
-                $"Successfully inserted {fileName} to database | ROWS AFFECTED: ({rowsAffected})");
+                $"'{fileName}' was successfully inserted to database | ROWS AFFECTED: ({rowsAffected})");
         }
         catch (Exception e)
         {
