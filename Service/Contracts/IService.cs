@@ -4,5 +4,6 @@ namespace DemoDataDump.Service.Contracts;
 
 public interface IService
 {
-    public void Write();
+    public Task Write();
+    public Task Read();
 }

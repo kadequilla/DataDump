@@ -1,4 +1,5 @@
-﻿using DemoDataDump.Constants;
+﻿using System.Data.SqlClient;
+using DemoDataDump.Constants;
 using Npgsql;
 
 namespace DemoDataDump.Data;
@@ -7,19 +8,17 @@ public class DataConnection
 {
     public static readonly DataConnection Instance = new();
 
-    private static NpgsqlConnection Connect()
-    {
-        return new NpgsqlConnection(ConnectionString.PgConnString);
-    }
 
-    public readonly NpgsqlConnection NpgsqlConnection = Connect();
+    public readonly NpgsqlConnection NpgsqlConnection = new(ConnectionString.PgConnString);
+    public readonly SqlConnection SqlConnection = new(ConnectionString.MssqlConnString);
 
     public void OpenConnection()
     {
         try
         {
             NpgsqlConnection.Open();
-            Console.WriteLine("Connected to PostgreSQL database.");
+            SqlConnection.Open();
+            Console.WriteLine("Connected to databases.");
         }
         catch (Exception e)
         {
@@ -32,7 +31,9 @@ public class DataConnection
         try
         {
             NpgsqlConnection.Close();
-            Console.WriteLine("Disconnected to PostgreSQL database.");
+            SqlConnection.Close();
+            Console.ResetColor();
+            Console.WriteLine("Disconnected to databases.");
         }
         catch (Exception e)
         {

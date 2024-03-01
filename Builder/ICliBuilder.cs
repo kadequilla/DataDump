@@ -4,5 +4,5 @@ public interface ICliBuilder
 {
     public void AddService<T>() where T : new();
 
-    public void Build(string[] args);
+    public Task BuildAsync(string[] args);
 }

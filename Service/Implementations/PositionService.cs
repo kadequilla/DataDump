@@ -1,13 +1,38 @@
-﻿using DemoDataDump.Model;
+﻿using Dapper;
+using DemoDataDump.Model;
 using DemoDataDump.Service.Contracts;
 
 namespace DemoDataDump.Service.Implementations;
 
-public class PositionService : AbstractServiceBase<Position>, IService
+public class PositionService : AServiceBase<Position>, IService
 {
-    public void Write()
+    public async Task Write()
     {
-        var employees = Query("SELECT * FROM position");
-        GenerateFile(employees, "Position.parquet");
+        var instances
+            = NPglSqlConn.Query<Position>("select * from position");
+        await WriteFile(instances, "Position.parquet");
+    }
+
+    public async Task Read()
+    {
+        try
+        {
+            const string fileName = "Position.parquet";
+            var instances = await ReadFile(fileName);
+
+            var qry = "" +
+                      "INSERT INTO position (Id, Description, DateCreated, DateUpdated, IsActive)\n" +
+                      "SELECT @Id, @Description, @DateCreated, @DateUpdated, @IsActive\n " +
+                      "WHERE NOT EXISTS (SELECT 1 FROM position WHERE Id = @Id);";
+
+            var rowsAffected = await SqlConnection.ExecuteAsync(qry, instances);
+
+            Utils.Println(ConsoleColor.Cyan,
+                $"Successfully inserted {fileName} to database | ROWS AFFECTED: ({rowsAffected})");
+        }
+        catch (Exception e)
+        {
+            Utils.Println(ConsoleColor.Red, e.Message);
+        }
     }
 }
