@@ -1,6 +1,6 @@
 ﻿namespace DemoDataDump.Builder;
 
-public interface ICliBuilder
+public interface IAppBuilder
 {
     public void AddService<T>() where T : new();
 

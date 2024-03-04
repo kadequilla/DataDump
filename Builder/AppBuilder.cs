@@ -2,9 +2,9 @@
 
 namespace DemoDataDump.Builder;
 
-public class CliBuilder : ICliBuilder
+public class AppBuilder : IAppBuilder
 {
-    public static readonly CliBuilder Instance = new();
+    public static readonly AppBuilder Instance = new();
     private List<dynamic> ObjectInstances { get; } = [];
 
     public void AddService<T>() where T : new()
@@ -17,7 +17,7 @@ public class CliBuilder : ICliBuilder
         var dataCon = DataConnection.Instance;
         await dataCon.OpenConnectionAsync();
 
-        //RUN ASYNC APPROACH
+        //RUN ALL ASYNC
         //Step 1: Write Parquet file.
         await RunWrite(dataCon);
         Utils.Println(ConsoleColor.DarkGreen, "DONE WRITING \u2713 \n");
@@ -26,7 +26,7 @@ public class CliBuilder : ICliBuilder
         await RunRead(dataCon);
         Utils.Println(ConsoleColor.DarkGreen, "DONE INSERT TO DATABASE \u2713 \n");
 
-        /* RUN PER ARGS APPROACH
+        /* RUN PER ARGS
          * if (args.First().Equals("write"))
             {
                 await RunWrite(dataCon);
