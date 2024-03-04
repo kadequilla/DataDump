@@ -1,13 +1,11 @@
-﻿using System.Data.SqlClient;
-using System.Timers;
-using Dapper;
+﻿using Dapper;
 using DemoDataDump.Constants;
 using Parquet.Serialization;
 using Timer = System.Threading.Timer;
 
 namespace DemoDataDump.Service.Implementations.Abstracts;
 
-public abstract class AServiceBase<TModel> : AdbService where TModel : new()
+public abstract class AbstractServiceBase<TModel> : AbstractDbService where TModel : new()
 {
     protected async Task WriteFile(IEnumerable<TModel> objectInstances, string fileName)
     {

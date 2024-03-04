@@ -4,7 +4,7 @@ using Npgsql;
 
 namespace DemoDataDump.Service.Implementations.Abstracts;
 
-public abstract class AdbService
+public abstract class AbstractDbService
 {
     protected NpgsqlConnection NPglSqlConn = null!;
     protected SqlConnection SqlConnection = null!;

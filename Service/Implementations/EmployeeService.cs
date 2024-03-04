@@ -5,7 +5,7 @@ using DemoDataDump.Service.Implementations.Abstracts;
 
 namespace DemoDataDump.Service.Implementations;
 
-public class EmployeeService : AServiceBase<Employee>, IService
+public class EmployeeService : AbstractServiceBase<Employee>, IService
 {
     public async Task Write()
     {
